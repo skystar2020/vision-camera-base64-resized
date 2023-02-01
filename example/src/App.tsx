@@ -11,31 +11,31 @@ export default function App() {
   const device = devices.back ?? devices.external ?? devices.front ?? devices.unspecified;
   console.log(device, devices, hasPermission);
   React.useEffect(() => {
-      (async () => {
-          const status = await Camera.requestCameraPermission();
-          setHasPermission(status === 'authorized');
-      })();
+    (async () => {
+      const status = await Camera.requestCameraPermission();
+      setHasPermission(status === 'authorized');
+    })();
   }, []);
 
   const process = useFrameProcessor((frame) => {
-      'worklet';
-      // console.log(frame)
-     console.log(frameToBase64(frame).length);
+    'worklet';
+    // console.log(frame)
+    console.log(frameToBase64(frame, { width: 500, height: 500, quality: 100 }).length);
   }, [])
 
   return device != null && hasPermission ? (
     <View style={styles.container}>
-        <Camera
-            style={styles.camera}
-            isActive={true}
-            device={device}
-            frameProcessor={process}
-            frameProcessorFps={1}
-        />
+      <Camera
+        style={styles.camera}
+        isActive={true}
+        device={device}
+        frameProcessor={process}
+        frameProcessorFps={1}
+      />
     </View>
-) : (
-  <Text>Camera not found</Text>
-)
+  ) : (
+    <Text>Camera not found</Text>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ececec',
   },
   camera: {
-      width: dimensions.width,
-      height: dimensions.height,
+    width: dimensions.width,
+    height: dimensions.height,
   },
 });
