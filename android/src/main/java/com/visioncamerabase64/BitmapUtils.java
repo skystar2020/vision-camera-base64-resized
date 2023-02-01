@@ -38,6 +38,30 @@ import java.nio.ByteBuffer;
 public class BitmapUtils {
   private static final String TAG = "BitmapUtils";
 
+  public static Bitmap resize(Bitmap bitmap, Boolean keepAspectRatio,int width, int height,int quality) {
+    int maxSize = width > height ? width : height;
+    int outWidth = width;
+    int outHeight = height;
+    int inWidth = bitmap.getWidth();
+    int inHeight = bitmap.getHeight();
+    if(keepAspectRatio  ){
+      if (inWidth > inHeight) {
+        outWidth = maxSize;
+        outHeight = (inHeight * maxSize) / inWidth;
+      } else {
+        outHeight = maxSize;
+        outWidth = (inWidth * maxSize) / inHeight;
+      }
+    }
+
+    bitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, !keepAspectRatio );
+
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+
+    return BitmapFactory.decodeByteArray(stream.toByteArray(), 0, stream.size());
+  }
+
   public static Bitmap scaleToFitWidth(Bitmap b, int width) {
     float factor = width / (float) b.getWidth();
     return Bitmap.createScaledBitmap(b, width, (int) (b.getHeight() * factor), true);

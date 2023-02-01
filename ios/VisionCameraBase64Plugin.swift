@@ -7,10 +7,12 @@ public class VisionCameraBase64Plugin: NSObject, FrameProcessorPluginBase {
   public static func callback(_ frame: Frame!, withArgs args: [Any]!) -> Any! {
     let config = getConfig(withArgs: args)
     // if let options = args[0] as? NSDictionary {
-    let width = config?["width"] ?? 640.0
-    let height = config?["height"] ?? 480.0
-    let quality = config?["quality"] ?? 100.0
+    let width = (config?["width"] ?? 300) as Int
+    let height = (config?["height"] ?? 300) as Int
+    let quality = (config?["quality"] ?? 100) as Int
+    let keepAspectRatio = (config?["keepAspectRatio"] ?? 1) as Int
     let targetSize = CGSize(width: width, height: height)
+    let q: CGFloat = CGFloat(quality)
     guard let imageBuffer = CMSampleBufferGetImageBuffer(frame.buffer) else {
       print("Failed to get CVPixelBuffer!")
       return nil
@@ -22,18 +24,17 @@ public class VisionCameraBase64Plugin: NSObject, FrameProcessorPluginBase {
       return nil
     }
     let image = UIImage(cgImage: cgImage)
-    //let resizedImg = image.resizedImageWithinRect(targetSize)
-    //let resizedImg = image.resizedImage(targetSize)
-    // image = VisionCameraBase64Plugin.resizeImage(
-    //   image: image, newWidth: options["width"], newHeight: options["height"])
-    //let imageData = resizedImg.jpegData(compressionQuality: options["quality"])
-    let imageData = image.jpegData(compressionQuality: quality)
+
+    let resizedImg = image.resizeTo(keepAspectRatio: keepAspectRatio, rectSize: targetSize)
+
+    let imageData = resizedImg.jpegData(compressionQuality: q)
+
     return imageData?.base64EncodedString() ?? ""
-    // }
+
   }
-  static func getConfig(withArgs args: [Any]!) -> [String: CGFloat]! {
+  static func getConfig(withArgs args: [Any]!) -> [String: Int]! {
     if args.count > 0 {
-      let config = args[0] as? [String: CGFloat]
+      let config = args[0] as? [String: Int]
       return config
     }
     return nil

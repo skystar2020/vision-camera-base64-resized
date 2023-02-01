@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import 'react-native-reanimated';
+import { runOnJS } from 'react-native-reanimated';
 import { Camera, useCameraDevices, useFrameProcessor } from 'react-native-vision-camera';
 import { frameToBase64 } from 'vision-camera-base64';
 
@@ -8,7 +9,8 @@ const dimensions = Dimensions.get("screen");
 export default function App() {
   const [hasPermission, setHasPermission] = React.useState(false);
   const devices = useCameraDevices();
-  const device = devices.back ?? devices.external ?? devices.front ?? devices.unspecified;
+  const device = devices.front ?? devices.external ?? devices.back ?? devices.unspecified;
+  //const device = devices.back ?? devices.external ?? devices.front ?? devices.unspecified;
   console.log(device, devices, hasPermission);
   React.useEffect(() => {
     (async () => {
@@ -16,11 +18,15 @@ export default function App() {
       setHasPermission(status === 'authorized');
     })();
   }, []);
+  const handleFrame = React.useCallback((base64Str: string) => {
+    console.log(base64Str.length)
 
+  }, [])
   const process = useFrameProcessor((frame) => {
     'worklet';
-    // console.log(frame)
-    console.log(frameToBase64(frame, { width: 500, height: 500, quality: 100 }).length);
+
+    const base64Image = frameToBase64(frame, { keepAspectRatio: true, width: 200, height: 200, quality: 30 })
+    runOnJS(handleFrame)(base64Image);
   }, [])
 
   return device != null && hasPermission ? (
@@ -30,7 +36,10 @@ export default function App() {
         isActive={true}
         device={device}
         frameProcessor={process}
-        frameProcessorFps={1}
+        focusable={true}
+        preset={'vga-640x480'}
+        frameProcessorFps={13}
+        enablePortraitEffectsMatteDelivery={true}
       />
     </View>
   ) : (
