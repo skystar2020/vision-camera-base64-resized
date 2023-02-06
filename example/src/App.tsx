@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import 'react-native-reanimated';
 import { runOnJS } from 'react-native-reanimated';
 import { Camera, useCameraDevices, useFrameProcessor } from 'react-native-vision-camera';
-import { frameToBase64 } from 'vision-camera-base64';
+import { frameToBase64 } from 'vision-camera-base64-resized';
 
 const dimensions = Dimensions.get("screen");
 export default function App() {

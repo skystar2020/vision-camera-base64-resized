@@ -1,4 +1,4 @@
-# vision-camera-base64
+# vision-camera-base64-resized
 
 A simple VisionCamera FrameProcessor plugin. 
 Convert the frame to base64 string format.
@@ -8,7 +8,7 @@ __Note:__ This plugin is only string and not include `data:image/blabla/;base64,
 ## Installation
 
 ```sh
-npm install vision-camera-base64
+npm install vision-camera-base64-resized
 ```
 
 Add this line to `babel.config.js`
@@ -25,7 +25,7 @@ Add this line to `babel.config.js`
 ## Usage
 
 ```js
-import { frameToBase64 } from 'vision-camera-base64';
+import { frameToBase64 } from 'vision-camera-base64-resized';
 
 // ...
 const process = useFrameProcessor((frame) => {

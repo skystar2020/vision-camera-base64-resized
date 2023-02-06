@@ -1,5 +1,5 @@
 {
-  "name": "vision-camera-base64",
+  "name": "vision-camera-base64-resized",
   "version": "1.1.0",
   "description": "test",
   "main": "lib/commonjs/index",
@@ -41,13 +41,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/yasintorun/vision-camera-base64",
+  "repository": "https://github.com/yasintorun/vision-camera-base64-resized",
   "author": "Yasin Torun <yasintorun4680@gmail.com> (https://github.com/yasintorun)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yasintorun/vision-camera-base64/issues"
+    "url": "https://github.com/yasintorun/vision-camera-base64-resized/issues"
   },
-  "homepage": "https://github.com/yasintorun/vision-camera-base64#readme",
+  "homepage": "https://github.com/yasintorun/vision-camera-base64-resized#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

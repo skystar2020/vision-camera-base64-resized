@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "vision-camera-base64": ["./src/index"]
+      "vision-camera-base64-resized": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
