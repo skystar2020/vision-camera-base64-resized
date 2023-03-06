@@ -38,8 +38,9 @@ public class VisionCameraBase64Plugin extends FrameProcessorPlugin {
 
     @SuppressLint("UnsafeOptInUsageError")
     Bitmap bitmap = BitmapUtils.getBitmap(image);
-    Bitmap resized = BitmapUtils.resize(bitmap, keepAspectRatio,width, height,quality);
-    return bitmapToBase64(resized, imageFormat ,100);
+    //System.out.println("width = " + width + ", height = " + height + "keepAspectRatio = " + keepAspectRatio);
+    Bitmap resized = BitmapUtils.resize(bitmap, keepAspectRatio, width, height, quality);
+    return bitmapToBase64(resized, imageFormat, 100);
   }
 
   /** Converts a bitmap to base64 format string */
