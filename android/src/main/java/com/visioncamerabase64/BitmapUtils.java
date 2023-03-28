@@ -38,55 +38,28 @@ import java.nio.ByteBuffer;
 public class BitmapUtils {
   private static final String TAG = "BitmapUtils";
 
-  public static Bitmap resize(Bitmap bitmap, Boolean keepAspectRatio, int width, int height, int quality) {
-    // int maxSize = width > height ? width : height;
+  public static Bitmap resize(Bitmap bitmap, Boolean keepAspectRatio,int width, int height,int quality) {
+    int maxSize = width > height ? width : height;
     int outWidth = width;
     int outHeight = height;
     int inWidth = bitmap.getWidth();
     int inHeight = bitmap.getHeight();
-    
-    try {
-      if (keepAspectRatio) {
-        // if (inWidth > inHeight) {
-        // outHeight = height;
-        // outWidth = (inWidth * height) / inHeight;
-        // } else {
-        // outWidth = width;
-        // outHeight = (inHeight * width) / inWidth;
-        // }
-
-        float widthRatio = (float) width / (float) inWidth;
-        float heightRatio = (float) height / (float) inHeight;
-
-        // Figure out what our orientation is, and use that to form the rectangle
-
-        if (widthRatio > heightRatio) {
-          outWidth = (int) ((float) (inWidth * heightRatio));
-          outHeight = (int) ((float) (inHeight * heightRatio));
-        } else {
-          outWidth = (int) ((float) (inWidth * widthRatio));
-          outHeight = (int) ((float) (inHeight * widthRatio));
-        }
-        
-        // System.out.println("orginal-width = "+bitmap.getWidth());
-        // System.out.println("orginal-height = "+bitmap.getHeight());
-        // System.out.println("requested-width = "+ width);
-        // System.out.println("requested-height = "+ height);
-        // System.out.println("new-width = "+ outWidth);
-        // System.out.println("new-height = "+ outHeight);
-        // System.out.println("widthRatio = " + widthRatio);
-        // System.out.println("heightRatio = "+ heightRatio);
+    if(keepAspectRatio  ){
+      if (inWidth > inHeight) {//when the orginal width is bigger than orginal height (wide image)
+        outWidth = maxSize;
+        outHeight = (inHeight * maxSize) / inWidth;
+      } else { //vertical
+        outHeight = maxSize;
+        outWidth = (inWidth * maxSize) / inHeight;
       }
-
-      bitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, false);
-      ByteArrayOutputStream stream = new ByteArrayOutputStream();
-      bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
-      return BitmapFactory.decodeByteArray(stream.toByteArray(), 0, stream.size());
-    } catch (Exception e) {
-      e.printStackTrace();
-      
     }
-    return bitmap;
+
+    bitmap = Bitmap.createScaledBitmap(bitmap, outWidth, outHeight, !keepAspectRatio );
+
+    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream);
+
+    return BitmapFactory.decodeByteArray(stream.toByteArray(), 0, stream.size());
   }
 
   public static Bitmap scaleToFitWidth(Bitmap b, int width) {

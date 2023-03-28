@@ -1,5 +1,4 @@
 import UIKit
-
 extension UIImage {
   func resizeTo(keepAspectRatio: Int, rectSize: CGSize) -> UIImage {
     if keepAspectRatio > 0 {
@@ -8,17 +7,33 @@ extension UIImage {
     return resizeImageB(rectSize: rectSize)
   }
   func resizeImageA(rectSize: CGSize) -> UIImage {
+    var maxSize: Double = 0
+    if rectSize.width > rectSize.height {
+      maxSize = rectSize.width
+    } else {
+      maxSize = rectSize.height
+    }
+    var outWidth = rectSize.width
+    var outHeight = rectSize.height
+    let inWidth = size.width
+    let inHeight = size.height
 
-    let widthRatio = rectSize.width / size.width
-    let heightRatio = rectSize.height / size.height
+    if inWidth > inHeight {  //when the orginal width is bigger than orginal height (wide image)
+      outWidth = maxSize
+      outHeight = (inHeight * maxSize) / inWidth
+    } else {  //vertical image
+      outHeight = maxSize
+      outWidth = (inWidth * maxSize) / inHeight
+    }
 
     // Figure out what our orientation is, and use that to form the rectangle
     var newSize: CGSize
-    if widthRatio > heightRatio {
-      newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-    } else {
-      newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
-    }
+    newSize = CGSize(width: outWidth, height: outHeight)
+    // if widthRatio > heightRatio {
+    //   newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+    // } else {
+    //   newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+    // }
 
     // This is the rect that we've calculated out and this is what is actually used below
     let rect = CGRect(origin: .zero, size: newSize)
