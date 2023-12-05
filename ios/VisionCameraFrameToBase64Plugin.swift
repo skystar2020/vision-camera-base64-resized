@@ -1,7 +1,7 @@
 import Foundation
 
-@objc(VisionCameraBase64Plugin)
-public class VisionCameraBase64Plugin: NSObject, FrameProcessorPluginBase {
+@objc(VisionCameraFrameToBase64Plugin)
+public class VisionCameraFrameToBase64Plugin: NSObject, FrameProcessorPluginBase {
   private static let context = CIContext(options: nil)
   @objc
   public static func callback(_ frame: Frame!, withArgs args: [Any]!) -> Any! {
